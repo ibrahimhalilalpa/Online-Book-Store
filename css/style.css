@@ -2,7 +2,8 @@
 	width: 80%;
 }
 .card {
-	width: 18rem;
+	width: 25rem;
+	height: 50rem;
 }
 .category .list-group {
 	width: 200px;
@@ -11,3 +12,12 @@
 	text-decoration: none;
 }
 
+.img-box img {
+	height:350px;
+}
+
+.book-title
+{
+	text-align: center;
+	color: rgb(116, 155, 8);
+}

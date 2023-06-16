@@ -71,17 +71,20 @@ $languages = get_all_languages($conn);
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="#">Store</a>
+                <a class="nav-link" href="index.php">Store</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="add-book.php">Add Book</a>
+                <a class="nav-link active" href="edit-book.php">Edit Book</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="add-category.php">Add Category</a>
+                <a class="nav-link" href="add-category.php">Edit Category</a>
                 </li>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="add-author.php">Add Author</a>
+                <a class="nav-link" href="add-author.php">Edit Author</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="edit-language.php">Edit Language</a>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="logaut.php">Logaut</a>

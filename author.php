@@ -27,6 +27,10 @@ $current_author = get_author($conn, $id);
 include "php/func-category.php";
 $categories = get_all_categories($conn);
 
+# Language helper function
+include "php/func-language.php";
+$languages = get_all_languages($conn);
+
 
  ?>
 <!DOCTYPE html>
@@ -146,10 +150,26 @@ $categories = get_all_categories($conn);
 			</div>
 		<?php } ?>
 
-		<div class="category">
+
+		<div class="category"  style="width:250px">
+			<!-- List of languages -->
+				<div class="list-group" style="width: 250px; text-align: left;">
+			<?php if ($languages == 0){
+					// do nothing
+				}else{ ?>
+				<a href="#"
+				   class="list-group-item list-group-item-action active">Language</a>
+				   <?php foreach ($languages as $language ) {?>
+				  
+				   <a href="language.php?id=<?=$language['id']?>"
+				      class="list-group-item list-group-item-action">
+				      <?=$language['name']?></a>
+				<?php } } ?>
+			</div>
+
 			<!-- List of categories -->
-			<div class="list-group">
-				<?php if ($categories == 0){
+			<div class="list-group mt-5" style="width: 250px; text-align: left;">
+			<?php if ($categories == 0){
 					// do nothing
 				}else{ ?>
 				<a href="#"
@@ -163,7 +183,7 @@ $categories = get_all_categories($conn);
 			</div>
 
 			<!-- List of authors -->
-			<div class="list-group mt-5">
+			<div class="list-group mt-5" style="width: 250px; text-align: left;">
 				<?php if ($authors == 0){
 					// do nothing
 				}else{ ?>
@@ -176,7 +196,12 @@ $categories = get_all_categories($conn);
 				      <?=$author['name']?></a>
 				<?php } } ?>
 			</div>
+
+            
 		</div>
+
+
+
 		</div>
 	</div>
 </body>

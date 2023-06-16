@@ -41,6 +41,9 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['user_email']) )
                 <a class="nav-link active" href="add-author.php">Add Author</a>
                 </li>
                 <li class="nav-item">
+                <a class="nav-link" href="add-language.php">Add Language</a>
+                </li>
+                <li class="nav-item">
                 <a class="nav-link" href="logaut.php">Logaut</a>
                 </li>
             </ul>

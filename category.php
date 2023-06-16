@@ -26,6 +26,11 @@ include "php/func-category.php";
 $categories = get_all_categories($conn);
 $current_category = get_category($conn, $id);
 
+
+# Language helper function
+include "php/func-language.php";
+$languages = get_all_languages($conn);
+
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -81,6 +86,7 @@ $current_category = get_category($conn, $id);
 		    </div>
 		  </div>
 		</nav>
+		
 		<h1 class="display-4 p-3 fs-3"> 
 			<a href="index.php"
 			   class="nd">
@@ -144,10 +150,25 @@ $current_category = get_category($conn, $id);
 			</div>
 		<?php } ?>
 
-		<div class="category">
+		<div class="category"  style="width:250px">
+			<!-- List of languages -->
+				<div class="list-group" style="width: 250px; text-align: left;">
+			<?php if ($languages == 0){
+					// do nothing
+				}else{ ?>
+				<a href="#"
+				   class="list-group-item list-group-item-action active">Language</a>
+				   <?php foreach ($languages as $language ) {?>
+				  
+				   <a href="language.php?id=<?=$language['id']?>"
+				      class="list-group-item list-group-item-action">
+				      <?=$language['name']?></a>
+				<?php } } ?>
+			</div>
+
 			<!-- List of categories -->
-			<div class="list-group">
-				<?php if ($categories == 0){
+			<div class="list-group mt-5" style="width: 250px; text-align: left;">
+			<?php if ($categories == 0){
 					// do nothing
 				}else{ ?>
 				<a href="#"
@@ -161,7 +182,7 @@ $current_category = get_category($conn, $id);
 			</div>
 
 			<!-- List of authors -->
-			<div class="list-group mt-5">
+			<div class="list-group mt-5" style="width: 250px; text-align: left;">
 				<?php if ($authors == 0){
 					// do nothing
 				}else{ ?>
@@ -174,6 +195,8 @@ $current_category = get_category($conn, $id);
 				      <?=$author['name']?></a>
 				<?php } } ?>
 			</div>
+
+            
 		</div>
 		</div>
 	</div>

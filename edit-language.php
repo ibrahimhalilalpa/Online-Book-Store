@@ -1,13 +1,47 @@
 <?php
+
+//echo $_GET['id'];
+
 session_start();
 if(isset($_SESSION['user_id']) && isset($_SESSION['user_email']) )
 {
+    
+
+    #if language id is not set
+    if(!isset($_GET['id']))
+    {
+        #redirect to admin.php page
+        header("Location:admin.php");
+        exit;
+    }
+$id = $_GET['id'];
+
+#database connection file
+include "db_connection.php";
+
+# language helper function
+include "php/func-language.php";
+
+
+$language = get_language($conn,$id);
+//print_r($authors);
+
+#if the id is invalid
+if($language==0)
+{
+        #redirect to admin.php page
+        header("Location:admin.php");
+        exit;
+}
+
+
+
 
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Add Category</title>
+	<title>Edit Language</title>
     <!--    bootstrapt 5 CDN-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <!--    bootstrapt 5 Js bundle CDN-->
@@ -30,17 +64,17 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['user_email']) )
                 <a class="nav-link" aria-current="page" href="#">Store</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="add-book.php">Add Book</a>
+                <a class="nav-link" href="edit-book.php">Edit Book</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link active" href="add-category.php">Add Category</a>
+                <a class="nav-link" href="edit-category.php">Edit Category</a>
                 </li>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="add-author.php">Add Author</a>
+                <a class="nav-link" href="edit-author.php">Edit Author</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="add-language.php">Add Language</a>
+                <a class="nav-link active" href="edit-language.php">Edit Language</a>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="logaut.php">Logaut</a>
@@ -49,11 +83,11 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['user_email']) )
             </div>
         </div>
         </nav>
-        <form   action="php/add-category.php" 
+        <form   action="php/edit-language.php" 
                 method="post"
                 class="shadow p-4 raunded mt-5" 
                 style="width:90%; max-width:50rem;">
-            <h1 class="text-center pb-5 display-4 fs-3">Add New Category</h1>
+            <h1 class="text-center pb-5 display-4 fs-3">Edit Language</h1>
             <?php if(isset($_GET['error'])) { ?>
                 <div class="alert alert-danger" role="alert">
                 <?=htmlspecialchars($_GET['error']); ?>
@@ -66,15 +100,20 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['user_email']) )
             <?php } ?>
 
         <div class="mb-3">
-        <label class="form-label">Category Name:</label>
+        <label class="form-label">Language Name:</label>
         <input type="text" 
-            class="form-control" 
-            name="category_name">
+            value="<?=$language['id']?>"
+            hidden
+            name="language_id">
+        <input type="text" 
+            class="form-control"
+            value="<?=$language['name']?>"
+            name="language_name">
         </div>
         <button
             type="submit"
             class="btn btn-primary">
-            Add Category
+            Update
         </button>
 
         </form>

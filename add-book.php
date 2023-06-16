@@ -86,6 +86,9 @@ if (isset($_GET['author_id'])) {
                 <a class="nav-link" href="add-author.php">Add Author</a>
                 </li>
                 <li class="nav-item">
+                <a class="nav-link" href="add-language.php">Add Language</a>
+                </li>
+                <li class="nav-item">
                 <a class="nav-link" href="logaut.php">Logaut</a>
                 </li>
             </ul>

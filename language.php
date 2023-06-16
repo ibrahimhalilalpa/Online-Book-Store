@@ -1,12 +1,21 @@
 <?php 
 session_start();
 
+# If not language ID is set
+if (!isset($_GET['id'])) {
+	header("Location: index.php");
+	exit;
+}
+
+# Get category ID from GET request
+$id = $_GET['id'];
+
 # Database Connection File
 include "db_connection.php";
 
 # Book helper function
 include "php/func-book.php";
-$books = get_all_books($conn);
+$books = get_books_by_language($conn, $id);
 
 # author helper function
 include "php/func-author.php";
@@ -16,9 +25,12 @@ $authors = get_all_author($conn);
 include "php/func-category.php";
 $categories = get_all_categories($conn);
 
+
 # Language helper function
 include "php/func-language.php";
 $languages = get_all_languages($conn);
+$current_language = get_language($conn, $id);
+
 
 ?>
 <!DOCTYPE html>
@@ -26,7 +38,7 @@ $languages = get_all_languages($conn);
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Book Store</title>
+	<title><?=$current_language['name']?></title>
 
     <!-- bootstrap 5 CDN-->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
@@ -40,7 +52,6 @@ $languages = get_all_languages($conn);
 <body>
 	
 	<div class="container">
-		
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		  <div class="container-fluid">
 		    <a class="navbar-brand" href="index.php">Online Book Store</a>
@@ -77,27 +88,15 @@ $languages = get_all_languages($conn);
 		    </div>
 		  </div>
 		</nav>
-		<form action="search.php"
-             method="get" 
-             style="width: 100%; max-width: 50rem">
-
-       	<div class="input-group my-5">
-		  <input type="text" 
-		         class="form-control"
-		         name="key" 
-		         placeholder="Search Book..." 
-		         aria-label="Search Book..." 
-		         aria-describedby="basic-addon2">
-
-		  <button class="input-group-text
-		                 btn btn-primary" 
-		          id="basic-addon2">
-		          <img src="img/search.png"
-		               width="20">
-
-		  </button>
-		</div>
-       </form>
+		
+		<h1 class="display-4 p-3 fs-3"> 
+			<a href="index.php"
+			   class="nd">
+				<img src="img/back-arrow.PNG" 
+				     width="35">
+			</a>
+		   <?=$current_language['name']?>
+		</h1>
 		
 	   <div class="d-flex pt-5" >
 			<?php if ($books == 0){ ?>
