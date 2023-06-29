@@ -20,6 +20,11 @@ $categories = get_all_categories($conn);
 include "php/func-language.php";
 $languages = get_all_languages($conn);
 
+# user helper function
+include "php/func-user.php";
+$users = get_all_users($conn);
+//print_r($users);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,17 +68,69 @@ $languages = get_all_languages($conn);
 		          <a class="nav-link" 
 		             href="#">About</a>
 		        </li>
-		        <li class="nav-item">
-		          <?php if (isset($_SESSION['user_id'])) {?>
-		          	<a class="nav-link" 
-		             href="admin.php">Admin</a>
-		          <?php }else{ ?>
-		          <a class="nav-link" 
-		             href="login.php">Login</a>
-		          <?php } ?>
 
-		        </li>
+				<li class="nav-item">
+  				<?php if (isset($_SESSION['user_id'])) 
+				{
+   				// Kullanıcının oturum açtığı durum
+   					if ($_SESSION['rank'] == 0) {
+      				// Rank değeri 0 ise Logout bağlantısını görüntüle
+  					?>
+      				<a class="nav-link" href="logaut.php">Logout</a>
+
+  					<?php } else {
+      				// Rank değeri 0'dan farklı ise Admin bağlantısını görüntüle
+  						?>
+   						<a class="nav-link" href="admin.php">Admin Panel</a>
+  						<?php }
+  				} 
+				else 
+				{
+                    // Kullanıcının oturum açmadığı durum
+  					?>
+   					<a class="nav-link" href="login.php">Login</a>
+ 					<?php 
+				} ?>
+				</li>
+
+
 		      </ul>
+			  <h5><?php
+
+// Kullanıcının giriş yaptığı kontrol ediliyor
+if (isset($_SESSION['user_id']) && isset($_SESSION['user_email'])) {
+  // Kullanıcının adını yazdırma
+  
+  $full_name = $_SESSION['full_name'];
+
+  if(isset($_SESSION['rank']) && $_SESSION['rank'] == 0)
+  {
+	$messages = [
+		"Hello, $full_name! Today is going to be a great day!",
+		"Welcome, $full_name! Good to see you here!",
+		"Hey, $full_name! Welcome to our site! We wish you a pleasant browsing!",
+		"$full_name, welcome! We hope you have a good time on our site!"
+	  ];
+	  $random_message = $messages[array_rand($messages)];
+	  echo $random_message;
+}
+else
+{
+	echo "Admin";
+
+}
+
+
+} else {
+  // Kullanıcı giriş yapmamışsa giriş formunu göster
+  // ...
+  echo  "GUEST";
+
+}
+?>
+</h5>
+
+
 		    </div>
 		  </div>
 		</nav>
@@ -170,6 +227,8 @@ $languages = get_all_languages($conn);
 			</div>
 		<?php } ?>
 
+
+		
 		<div class="category"  style="width:250px">
 			<!-- List of languages -->
 				<div class="list-group" style="width: 250px; text-align: left;">

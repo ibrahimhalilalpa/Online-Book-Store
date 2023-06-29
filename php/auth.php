@@ -1,19 +1,16 @@
 <?php
 session_start();
-if (isset($_POST['email']) && 
-    isset($_POST['password']))
-    {
-        #validation helper function
-        include "func-validation.php";
-        //get data from POST request and store them in var //POST isteğinden veri alın ve bunları var içinde saklayın
-        #database connection file
-        include "../db_connection.php";
 
+if (isset($_POST['email']) && isset($_POST['password'])) {
+    // Validation helper function
+    include "func-validation.php";
+    // Database connection file
+    include "../db_connection.php";
 
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    #simple form validation //basit form doğrulama
+    // Simple form validation
     $text = "Email";
     $location = "../login.php";
     $ms = "error";
@@ -24,60 +21,58 @@ if (isset($_POST['email']) &&
     $ms = "error";
     is_empty($password, $text, $location, $ms, "");
 
+    // Search for the email
+    $sql = "SELECT * FROM users WHERE email=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$email]);
 
-        #search for the email
-        $sql = "SELECT * from admin WHERE email=?"; 
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$email]);
+    // If the email exists
+    if ($stmt->rowCount() === 1) {
+        $user = $stmt->fetch();
 
-        #if the email exist
-    if($stmt->rowCount()===1)
-        {
-            //echo "YEAH!";
-            $user = $stmt->fetch();
+        $user_id = $user['id'];
+        $full_name = $user['full_name'];
+        $user_email = $user['email'];
+        $user_password = $user['password'];
+        $rank = $user['rank'];
 
-            $user_id=$user['id'];
-            $user_email=$user['email'];
-            $user_password=$user['password'];
-
-            if($email===$user_email)
+        if ($email === $user_email && password_verify($password, $user_password)) {
+            // Successful login
+            if($rank==0)
             {
-                if (password_verify($password,$user_password)) {
-                    //echo "Okay!";
-                    $_SESSION['user_id'] = $user_id;
-                    $_SESSION['user_email'] = $user_email;
-                    header("Location: ../admin.php");
+                $_SESSION['user_id'] = $user_id;
+                $_SESSION['user_email'] = $user_email;
+                $_SESSION['full_name'] = $full_name;
+                $_SESSION['rank'] = $rank;
 
-                }
-                else
-                {
-                    #error message
-                    $em = "Incorrect user name or password";
-                    header("Location: ../login.php?error=$em");
-                }
-
+                header("Location: ../index.php");
+                exit;
             }
             else
             {
-                #error message
-                $em = "Incorrect user name or password";
-                header("Location: ../login.php?error=$em");
+                $_SESSION['user_id'] = $user_id;
+                $_SESSION['user_email'] = $user_email;
+                $_SESSION['full_name'] = $full_name;
+                $_SESSION['rank'] = $rank;
 
+                header("Location: ../admin.php");
+                exit;
             }
-        }
-        else
-        {
-            //echo "NOPE";
-            #error message
-            $em = "Incorrect user name or password";
+        } else {
+            // Incorrect username or password
+            $em = "Incorrect username or password";
             header("Location: ../login.php?error=$em");
-
+            exit;
         }
+    } else {
+        // Incorrect username or password
+        $em = "Incorrect username or password";
+        header("Location: ../login.php?error=$em");
+        exit;
     }
-
-    else
-    {
-        #Redirect to "../login.php"
-        header("Location: ../login.php");
-    }
+} else {
+    // Redirect to "../login.php"
+    header("Location: ../login.php");
+    exit;
+}
 ?>
