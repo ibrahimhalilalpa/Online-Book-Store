@@ -4,6 +4,8 @@ session_start();
 # Database Connection File
 include "db_connection.php";
 
+
+
 # Book helper function
 include "php/func-book.php";
 $books = get_all_books($conn);
@@ -43,25 +45,22 @@ $users = get_all_users($conn);
 		integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
 		crossorigin="anonymous"></script>
 
-	<link rel="stylesheet" href="css/style.css">
-	<link rel="stylesheet" href="css/nav.css">
-	<link rel="stylesheet" href="css/according.css">
+	<link rel="stylesheet" href="./css/style.css">
 
-
-
+	<link rel="stylesheet" href="./css/according.css">
 	<script type="module" src="javascript/according.js"></script>
 	<script src="javascript/javascript.js"></script>
-
-
-
 
 
 </head>
 
 <body>
+
+
+
 	<div class="container1">
 
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px; font-size: 18px; 	margin-right: 5%;">
+		<nav class="navbar navbar-expand-lg bg-body-tertiary">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="index.php">Online Book Store</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -69,55 +68,28 @@ $users = get_all_users($conn);
 					aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<div class="collapse navbar-collapse m-lg-4" id="navbarSupportedContent" >
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
 						<li class="nav-item">
 							<a class="nav-link active" aria-current="page" href="index.php">Store</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Contact</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">About</a>
-						</li>
 
-						<li class="nav-item dropdown" style="color:black;">
-							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-								aria-expanded="false">
-								Mode
-							</a>
-							<ul  class="dropdown-menu">
-								<li  id="dark"><a style="color:black;" onclick="myFunctionDark()" class="nav-link" href="#">Dark</a>
-								</li>
-								<li  id="light"><a style="color:black;" onclick="myFunctionLight()" class="nav-link" href="#">Light</a>
-								</li>
-							</ul>
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="">About</a>
 						</li>
 
 						<li class="nav-item">
-							<?php if (isset($_SESSION['user_id'])) {
-								// Kullanıcının oturum açtığı durum
-								if ($_SESSION['rank'] == 0) {
-									// Rank değeri 0 ise Logout bağlantısını görüntüle
-									?>
-									<a  style="	color: red;" class="nav-link" href="logaut.php">Logout</a>
-
-								<?php } else {
-									// Rank değeri 0'dan farklı ise Admin bağlantısını görüntüle
-									?>
-									<a  style="	color: blue;" class="nav-link" href="admin.php">Admin Panel</a>
-								<?php }
-							} else {
-								// Kullanıcının oturum açmadığı durum
-								?>
-							<a  style="	color: yellow;" class="nav-link" href="login.php">Login</a>
-							<?php
-							} ?>
+							<a class="nav-link" href="#">Stars</a>
 						</li>
-					</ul>
+
+
+
+</ul>
+					<ul>
+					<li>
 					<h5 style="color:white;">
 						<?php
-
 						// Kullanıcının giriş yaptığı kontrol ediliyor
 						if (isset($_SESSION['user_id']) && isset($_SESSION['user_email'])) {
 							// Kullanıcının adını yazdırma
@@ -146,9 +118,35 @@ $users = get_all_users($conn);
 						}
 						?>
 					</h5>
+					</li>
+					
+					<li class="nav-item">
+						<?php if (isset($_SESSION['user_id'])) {
+							// Kullanıcının oturum açtığı durum
+							if ($_SESSION['rank'] == 0) {
+								// Rank değeri 0 ise Logout bağlantısını görüntüle
+								?>
+								<a class="nav-link" href="logaut.php">Logout</a>
+
+							<?php } else {
+								// Rank değeri 0'dan farklı ise Admin bağlantısını görüntüle
+								?>
+								<a class="nav-link" href="admin.php">Admin Panel</a>
+							<?php }
+						} else {
+							// Kullanıcının oturum açmadığı durum
+							?>
+						<a class="nav-link" href="login.php">Login</a>
+						<?php
+						} ?>
+					</li>
+					</ul>
+
 				</div>
 			</div>
 		</nav>
+
+
 
 		<form action="search.php" method="get" style="width: 100%; max-width: 50rem">
 
@@ -216,7 +214,9 @@ $users = get_all_users($conn);
 
 			</div>
 		</div>
-		<div class="d-flex" style="background:green;">
+
+
+		<div class="d-flex pt-5">
 			<?php if ($books == 0) { ?>
 				<div class="alert alert-warning 
 						text-center p-5" role="alert">
@@ -226,13 +226,13 @@ $users = get_all_users($conn);
 				</div>
 			<?php } else { ?>
 
-				<div class="pdf-list d-flex flex-wrap" style="background:gray;">
+				<div class="pdf-list d-flex flex-wrap">
 					<?php foreach ($books as $book) { ?>
-						<div class="card my-3 mx-5 justify-content-center ">
+						<div class="card m-1">
 							<div class="img-box">
 								<img src="uploads/cover/<?= $book['cover'] ?>" class="card-img-top">
 							</div>
-							<div class="card-body ">
+							<div class="card-body">
 								<div class="book-title">
 									<h5 claass="card-title">
 										<?= $book['title'] ?>

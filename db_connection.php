@@ -24,3 +24,8 @@ catch(PDOException $e)
     echo "Connection failed: ".$e->getMessage();
 }
 
+
+
+$db = mysqli_connect($sName, $uName, $pass, $db_name) or die("Could not connect database");
+
+?>

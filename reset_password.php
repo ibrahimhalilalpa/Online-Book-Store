@@ -1,8 +1,10 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 
-require 'PHPMailer/PHPMailer/Exception.php';
-require 'PHPMailer/PHPMailer/SMTP.php';
+require 'PHPMailer-master/src/Exception.php';
+require 'PHPMailer-master/src/SMTP.php';
+require 'PHPMailer-master/src/PHPMailer.php';
+
 
 // Diğer gerekli dosyaları dahil edin ve veritabanı bağlantısını kurun
 # Database Connection File
@@ -12,7 +14,6 @@ require_once 'db_connection.php';
 if($_POST)
 {
     //require_once 'PHPMailer/PHPMailer/PHPMailer.php';
-    require 'PHPMailer/PHPMailer/PHPMailer.php';
 
 
     $email = trim($_POST['email']);
@@ -46,7 +47,7 @@ if($_POST)
                 $mail->SMTPSecure = 'tls';  // Güvenli bağlantı için TLS kullanın
                 $mail->SMTPAuth = true;  // Kimlik doğrulamayı etkinleştirin
                 $mail->Username = 'ibrahimhalilalpa21@gmail.com';  // E-posta hesabının kullanıcı adı
-                $mail->Password = 'xxxxxxxx';  // E-posta hesabının şifresi
+                $mail->Password = '******';  // E-posta hesabının şifresi
 
                 // E-posta gönderim ayarlarını yapılandırın
                 $mail->setFrom('ibrahimhalilalpa21a@gmail.com', 'İbrahim Halil Alpa');  // Gönderen bilgileri
