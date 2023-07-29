@@ -88,7 +88,7 @@ function get_books_by_category($con, $id){
     return $books;
  }
 
- # get books by author
+ # get books by language
  function get_books_by_language($con, $id){
     $sql  = "SELECT * FROM books WHERE language_id=?";
     $stmt = $con->prepare($sql);
@@ -103,4 +103,3 @@ function get_books_by_category($con, $id){
     return $books;
  }
 
- 

@@ -21,6 +21,8 @@ if (isset($_POST['book_title'])       &&
         isset($_POST['book_description']) &&
         isset($_POST['book_author'])      &&
         isset($_POST['book_category'])    &&
+		isset($_POST['book_language'])    &&
+
         isset($_FILES['book_cover'])      &&
         isset($_FILES['file'])) {
 
@@ -28,6 +30,9 @@ if (isset($_POST['book_title'])       &&
 		$description = $_POST['book_description'];
 		$author      = $_POST['book_author'];
 		$category    = $_POST['book_category'];
+		$language    = $_POST['book_language'];
+
+		
 
 		# making URL data format
 		$user_input = 'title='.$title.'&category_id='.$category.'&desc='.$description.'&author_id='.$author;
@@ -53,7 +58,11 @@ if (isset($_POST['book_title'])       &&
         $location = "../add-book.php";
         $ms = "error";
 		is_empty($category, $text, $location, $ms, $user_input);
-        /////18.04.23 - Video 3
+
+		$text = "Book Language";
+        $location = "../add-book.php";
+        $ms = "error";
+		is_empty($language, $text, $location, $ms, $user_input);
 
         //echo "<pre>";
         //print_r($_FILES['file']);
@@ -105,11 +114,12 @@ if (isset($_POST['book_title'])       &&
                                             author_id,
                                             description,
                                             category_id,
+											language_id,
                                             cover,
                                             file)
-                         VALUES (?,?,?,?,?,?)";
+                         VALUES (?,?,?,?,?,?,?)";
                 $stmt = $conn->prepare($sql);
-			    $res  = $stmt->execute([$title, $author, $description, $category, $book_cover_URL, $file_URL]);
+			    $res  = $stmt->execute([$title, $author, $description,$category,$language, $book_cover_URL, $file_URL]);
 
 			/*
 		      If there is no error while 

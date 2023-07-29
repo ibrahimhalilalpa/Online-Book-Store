@@ -51,29 +51,28 @@ if($category==0)
 <body>
 
 <div class="container">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 75px; font-size: 17px; 	margin:auto;">
         <div class="container-fluid">
-            <a class="navbar-brand" href="admin.php">Admin</a>
+            <a class="navbar-brand" href="admin.php">Admin Panel</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                <a class="nav-link" href="index.php">Store</a>
+                <a class="nav-link" aria-current="page" href="index.php">Store</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="edit-book.php">Edit Book</a>
+                <a class="nav-link" href="#">Edit Book</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="edit-category.php">Edit Category</a>
-                </li>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="edit-author.php">Edit Author</a>
+                <a class="nav-link active" href="#">Edit Category</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="edit-language.php">Edit Language</a>
+                <a class="nav-link" href="#">Edit Author</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">Edit Language</a>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="logaut.php">Logaut</a>
@@ -85,7 +84,7 @@ if($category==0)
         <form   action="php/edit-category.php" 
                 method="post"
                 class="shadow p-4 raunded mt-5" 
-                style="width:90%; max-width:50rem;">
+                style="margin:auto; max-width:50rem;">
             <h1 class="text-center pb-5 display-4 fs-3">Edit Category</h1>
             <?php if(isset($_GET['error'])) { ?>
                 <div class="alert alert-danger" role="alert">

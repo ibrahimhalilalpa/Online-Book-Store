@@ -41,8 +41,18 @@ body, html {
     width: 100%;
   }
   
-  #AllBooks  {background-color: rgba(61, 110, 175, 0.795);}
-  #AllCategories {background-color: skyblue;}
-  #AllAuthors {background-color:rgba(163, 66, 150, 0.733);}
-  #AllLanguages {background-color:rgba(233, 133, 87, 0.568);}
-  #AllUsers {background-color:rgba(25, 19, 51, 0.568);}
+  #AllBooks  {background-color: rgba(136, 177, 224, 0.795);}
+  #AllCategories {background-color: rgba(136, 177, 224, 0.795);}
+  #AllAuthors {background-color: rgba(136, 177, 224, 0.795);}
+  #AllLanguages {background-color: rgba(136, 177, 224, 0.795);}
+  #AllUsers {background-color: rgba(136, 177, 224, 0.795);}
+
+  #AllBooks,#AllCategories,#AllAuthors,#AllLanguages,#AllUsers, tbody
+  {
+  text-align: center;
+
+  }
+
+  h2{
+    text-align: left;
+  }

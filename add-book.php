@@ -66,14 +66,14 @@ if (isset($_GET['author_id'])) {
 <div class="container">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="admin.php">Admin</a>
+        <a class="navbar-brand" href="admin.php">Admin Panel</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="#">Store</a>
+                <a class="nav-link" aria-current="page" href="index.php">Store</a>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link active" href="add-book.php">Add Book</a>
@@ -180,21 +180,20 @@ if (isset($_GET['author_id'])) {
 						</option>
 		    	   <?php }} } ?>
 		    </select>
-            <!--19.04.23 / 02.45 - Video 4 bitti-->
         </div>
         <div class="mb-3">
         <label class="form-label">Book Language</label>
         <select name="book_language"
 		            class="form-control">
 		    	    <option value="0">
-		    	    	Select Language
+		    	    	Select language
 		    	    </option>
 		    	    <?php 
                     if ($languages == 0) {
                     	# Do nothing!
                     }else{
 		    	    foreach ($languages as $language) { 
-		    	    	if ($language_id == $language['id']) { ?>
+		    	    	if  ($book['language_id']== $language['id']) { ?>
 		    	    	<option 
 		    	    	  selected
 		    	    	  value="<?=$language['id']?>">
@@ -202,7 +201,7 @@ if (isset($_GET['author_id'])) {
 		    	        </option>
 		    	        <?php }else{ ?>
 						<option 
-							value="<?=$v['id']?>">
+							value="<?=$language['id']?>">
 							<?=$language['name']?>
 						</option>
 		    	   <?php }} } ?>

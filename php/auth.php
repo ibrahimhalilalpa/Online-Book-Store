@@ -35,29 +35,39 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         $user_email = $user['email'];
         $user_password = $user['password'];
         $rank = $user['rank'];
+        $last_login = new DateTime();
+
+        
 
         if ($email === $user_email && password_verify($password, $user_password)) {
             // Successful login
-            if($rank==0)
-            {
+            if ($rank == 0) {
                 $_SESSION['user_id'] = $user_id;
                 $_SESSION['user_email'] = $user_email;
                 $_SESSION['full_name'] = $full_name;
                 $_SESSION['rank'] = $rank;
+                $_SESSION['last_login'] = $last_login;
+                $last_login_formatted = $last_login->format('Y-m-d H:i:s');
+                mysqli_query($db, "UPDATE users SET last_login='$last_login_formatted' WHERE email='$email'");
+
+
 
                 header("Location: ../index.php");
                 exit;
-            }
-            else
-            {
+            } else {
                 $_SESSION['user_id'] = $user_id;
                 $_SESSION['user_email'] = $user_email;
                 $_SESSION['full_name'] = $full_name;
                 $_SESSION['rank'] = $rank;
+                $_SESSION['last_login'] = $last_login;
+                $last_login_formatted = $last_login->format('Y-m-d H:i:s');
+                mysqli_query($db, "UPDATE users SET last_login='$last_login_formatted' WHERE email='$email'");
+
 
                 header("Location: ../admin.php");
                 exit;
             }
+
         } else {
             // Incorrect username or password
             $em = "Incorrect username or password";

@@ -25,6 +25,7 @@ include "php/func-user.php";
 $users = get_all_users($conn);
 //print_r($users);
 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,16 +45,11 @@ $users = get_all_users($conn);
 		crossorigin="anonymous"></script>
 
 	<link rel="stylesheet" href="css/style.css">
-	<link rel="stylesheet" href="css/nav.css">
 	<link rel="stylesheet" href="css/according.css">
-
 
 
 	<script type="module" src="javascript/according.js"></script>
 	<script src="javascript/javascript.js"></script>
-
-
-
 
 
 </head>
@@ -61,7 +57,7 @@ $users = get_all_users($conn);
 <body>
 	<div class="container1">
 
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px; font-size: 18px; 	margin-right: 5%;">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 75px; font-size: 17px; 	margin:auto;">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="index.php">Online Book Store</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -69,16 +65,10 @@ $users = get_all_users($conn);
 					aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<div class="collapse navbar-collapse m-lg-4" id="navbarSupportedContent" >
+				<div class="collapse navbar-collapse m-lg-4" id="navbarSupportedContent">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item">
 							<a class="nav-link active" aria-current="page" href="index.php">Store</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Contact</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">About</a>
 						</li>
 
 						<li class="nav-item dropdown" style="color:black;">
@@ -86,31 +76,37 @@ $users = get_all_users($conn);
 								aria-expanded="false">
 								Mode
 							</a>
-							<ul  class="dropdown-menu">
-								<li  id="dark"><a style="color:black;" onclick="myFunctionDark()" class="nav-link" href="#">Dark</a>
+							<ul class="dropdown-menu">
+								<li id="dark"><a style="color:black;" onclick="myFunctionDark()" class="nav-link"
+										href="#">Dark</a>
 								</li>
-								<li  id="light"><a style="color:black;" onclick="myFunctionLight()" class="nav-link" href="#">Light</a>
+								<li id="light"><a style="color:black;" onclick="myFunctionLight()" class="nav-link"
+										href="#">Light</a>
 								</li>
 							</ul>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#"><button onclick="myFunctionmyDIV()"
+									style="background:transparent; color:yellow; border:none;">Star List</button></a>
 						</li>
 
 						<li class="nav-item">
 							<?php if (isset($_SESSION['user_id'])) {
-								// Kullanıcının oturum açtığı durum
+								// State when the user is logged in
 								if ($_SESSION['rank'] == 0) {
-									// Rank değeri 0 ise Logout bağlantısını görüntüle
+									// Display Logout link if Rank value is 0
 									?>
-									<a  style="	color: red;" class="nav-link" href="logaut.php">Logout</a>
+									<a style="	color: red;" class="nav-link" href="logaut.php">Logout</a>
 
 								<?php } else {
-									// Rank değeri 0'dan farklı ise Admin bağlantısını görüntüle
+									// Display Admin link if Rank value is different than 0
 									?>
-									<a  style="	color: blue;" class="nav-link" href="admin.php">Admin Panel</a>
+									<a style="	color: blue;" class="nav-link" href="admin.php">Admin Panel</a>
 								<?php }
 							} else {
-								// Kullanıcının oturum açmadığı durum
+								// When the user is not logged in
 								?>
-							<a  style="	color: yellow;" class="nav-link" href="login.php">Login</a>
+							<a style="	color: yellow;" class="nav-link" href="login.php">Login</a>
 							<?php
 							} ?>
 						</li>
@@ -118,9 +114,9 @@ $users = get_all_users($conn);
 					<h5 style="color:white;">
 						<?php
 
-						// Kullanıcının giriş yaptığı kontrol ediliyor
+						// Checking that the user is logged in
 						if (isset($_SESSION['user_id']) && isset($_SESSION['user_email'])) {
-							// Kullanıcının adını yazdırma
+							// Print the user's full name
 						
 							$full_name = $_SESSION['full_name'];
 
@@ -134,18 +130,22 @@ $users = get_all_users($conn);
 								$random_message = $messages[array_rand($messages)];
 								echo $random_message;
 							} else {
-								echo "Admin";
-
+								echo "Admin: " . $full_name = $_SESSION['full_name'];
 							}
 
 						} else {
-							// Kullanıcı giriş yapmamışsa giriş formunu göster
+							// Show login form if user is not logged in
 							// ...
 							echo "GUEST";
 
 						}
 						?>
 					</h5>
+
+					<button class="btn btn-outline m-lg-4 ">
+						<h5><a class="nav-link text-warning" aria-current="page" href="UpdateProfile.php">Profile</a>
+						</h5>
+					</button>
 				</div>
 			</div>
 		</nav>
@@ -163,60 +163,63 @@ $users = get_all_users($conn);
 			</div>
 		</form>
 
-		<div>
-
-			<button class="accordion">
-				<h3>Star of the Week</h3>
-			</button>
-			<div class="panel">
-				<?php
-				$query = mysqli_query($db, "select full_name, SUM(downloading_count) + SUM(reading_count) AS 'Total' from users GROUP BY full_name order by Total desc limit 1;");
-				while ($row = mysqli_fetch_array($query)) {
-					?>
-					<p>
-						<?php echo htmlentities($row['full_name']); ?><span> <b>(
-								<?php echo htmlentities($row['Total']); ?>)</span></b>
-					</p>
-				<?php } ?>
-
-			</div>
 
 
-			<button class="accordion">
-				<h4>Top book downloaders of the week</h4>
-			</button>
-			<div class="panel">
-				<?php
-				$query = mysqli_query($db, "select full_name,downloading_count from users order by downloading_count desc  limit 3;");
-				while ($row = mysqli_fetch_array($query)) {
-					?>
-					<p>
-						<?php echo htmlentities($row['full_name']); ?><span> <b>(
-								<?php echo htmlentities($row['downloading_count']); ?>)</span></b>
-					</p>
-				<?php } ?>
+		<div id="myDIV" style="display: none;">
+			<div>
+				<button class="accordion">
+					<h3>Star of the Week</h3>
+				</button>
+				<div class="panel">
+					<?php
+					$query = mysqli_query($db, "select full_name, SUM(downloading_count) + SUM(reading_count) AS 'Total' from users GROUP BY full_name order by Total desc limit 1;");
+					while ($row = mysqli_fetch_array($query)) {
+						?>
+						<p>
+							<?php echo htmlentities($row['full_name']); ?><span> <b>(
+									<?php echo htmlentities($row['Total']); ?>)</span></b>
+						</p>
+					<?php } ?>
 
-			</div>
+				</div>
 
+				<button class="accordion">
+					<h4>Top book downloaders of the week</h4>
+				</button>
+				<div class="panel">
+					<?php
+					$query = mysqli_query($db, "select full_name,downloading_count from users order by downloading_count desc  limit 3;");
+					while ($row = mysqli_fetch_array($query)) {
+						?>
+						<p>
+							<?php echo htmlentities($row['full_name']); ?><span> <b>(
+									<?php echo htmlentities($row['downloading_count']); ?>)</span></b>
+						</p>
+					<?php } ?>
 
+				</div>
 
-			<button class="accordion">
-				<h4>Top book readers of the week</h4>
-			</button>
-			<div class="panel">
-				<?php
-				$query = mysqli_query($db, "select full_name,reading_count from users order by reading_count desc  limit 3;");
-				while ($row = mysqli_fetch_array($query)) {
-					?>
-					<p>
-						<?php echo htmlentities($row['full_name']); ?><span> <b>(
-								<?php echo htmlentities($row['reading_count']); ?>)</span></b>
-					</p>
-				<?php } ?>
+				<button class="accordion">
+					<h4>Top book readers of the week</h4>
+				</button>
+				<div class="panel">
+					<?php
+					$query = mysqli_query($db, "select full_name,reading_count from users order by reading_count desc  limit 3;");
+					while ($row = mysqli_fetch_array($query)) {
+						?>
+						<p>
+							<?php echo htmlentities($row['full_name']); ?><span> <b>(
+									<?php echo htmlentities($row['reading_count']); ?>)</span></b>
+						</p>
+					<?php } ?>
 
+				</div>
 			</div>
 		</div>
-		<div class="d-flex" style="background:green;">
+
+
+
+		<div class="d-flex">
 			<?php if ($books == 0) { ?>
 				<div class="alert alert-warning 
 						text-center p-5" role="alert">
@@ -226,7 +229,7 @@ $users = get_all_users($conn);
 				</div>
 			<?php } else { ?>
 
-				<div class="pdf-list d-flex flex-wrap" style="background:gray;">
+				<div class="pdf-list d-flex flex-wrap">
 					<?php foreach ($books as $book) { ?>
 						<div class="card my-3 mx-5 justify-content-center ">
 							<div class="img-box">
@@ -240,42 +243,42 @@ $users = get_all_users($conn);
 								</div>
 
 								<p class="card-text">
-									<i><b>By:
-											<?php foreach ($authors as $author) {
-												if ($author['id'] == $book['author_id']) {
-													echo $author['name'];
-													break;
-												}
-												?>
+									<i><b>By:</b>
+										<?php foreach ($authors as $author) {
+											if ($author['id'] == $book['author_id']) {
+												echo $author['name'];
+												break;
+											}
+											?>
 
-											<?php } ?>
-											<br>
-										</b></i>
+										<?php } ?>
+										<br>
+									</i>
+									<br><b>Description:</b>
 									<?= $book['description'] ?>
-									<br><i><b>Category:
-											<?php foreach ($categories as $category) {
-												if ($category['id'] == $book['category_id']) {
-													echo $category['name'];
-													break;
-												}
-												?>
+									<br><i><b>Category:</b>
+										<?php foreach ($categories as $category) {
+											if ($category['id'] == $book['category_id']) {
+												echo $category['name'];
+												break;
+											}
+											?>
+										<?php } ?>
+										<br>
+									</i>
+									<br><i><b>Language:</b>
+										<?php foreach ($languages as $language) {
+											if ($language['id'] == $book['language_id']) {
+												echo $language['name'];
+												break;
+											}
+											?>
 
-											<?php } ?>
-											<br>
-										</b></i>
-									<br><i><b>Language:
-											<?php foreach ($languages as $language) {
-												if ($language['id'] == $book['language_id']) {
-													echo $language['name'];
-													break;
-												}
-												?>
-
-											<?php } ?>
-											<br>
-										</b></i>
+										<?php } ?>
+										<br>
+									</i>
 								</p>
-								<a href="uploads/files/<?= $book['file'] ?>" class="btn btn-success">Open</a>
+								<a href="uploads/files/<?= $book['file'] ?>" target="_blank" class="btn btn-success">Open</a>
 
 								<a id="downloadBook" href="uploads/files/<?= $book['file'] ?>" class="btn btn-primary"
 									download="<?= $book['title'] ?>">Download</a>
@@ -286,10 +289,10 @@ $users = get_all_users($conn);
 			<?php } ?>
 
 
-
 			<div class="category" style="width:250px">
 
 				<!-- List of languages -->
+
 				<div class="list-group" style="width: 250px; text-align: left;">
 					<?php if ($languages == 0) {
 					// do nothing
@@ -297,13 +300,15 @@ $users = get_all_users($conn);
 						<a href="#" class="list-group-item list-group-item-action active">Language</a>
 						<?php foreach ($languages as $language) { ?>
 
-							<a href="language.php?id=<?= $language['id'] ?>" class="list-group-item list-group-item-action">
+							<a href="filter-language.php?id=<?= $language['id'] ?>"
+								class="list-group-item list-group-item-action">
 								<?= $language['name'] ?></a>
 						<?php }
 				} ?>
 				</div>
 
 				<!-- List of categories -->
+
 				<div class="list-group mt-5" style="width: 250px; text-align: left;">
 					<?php if ($categories == 0) {
 					// do nothing
@@ -311,13 +316,15 @@ $users = get_all_users($conn);
 						<a href="#" class="list-group-item list-group-item-action active">Category</a>
 						<?php foreach ($categories as $category) { ?>
 
-							<a href="category.php?id=<?= $category['id'] ?>" class="list-group-item list-group-item-action">
+							<a href="filter-category.php?id=<?= $category['id'] ?>"
+								class="list-group-item list-group-item-action">
 								<?= $category['name'] ?></a>
 						<?php }
 				} ?>
 				</div>
 
 				<!-- List of authors -->
+
 				<div class="list-group mt-5" style="width: 250px; text-align: left;">
 					<?php if ($authors == 0) {
 					// do nothing
@@ -325,7 +332,7 @@ $users = get_all_users($conn);
 						<a href="#" class="list-group-item list-group-item-action active">Author</a>
 						<?php foreach ($authors as $author) { ?>
 
-							<a href="author.php?id=<?= $author['id'] ?>" class="list-group-item list-group-item-action">
+							<a href="filter-author.php?id=<?= $author['id'] ?>" class="list-group-item list-group-item-action">
 								<?= $author['name'] ?></a>
 						<?php }
 				} ?>
@@ -334,12 +341,19 @@ $users = get_all_users($conn);
 			</div>
 
 		</div>
+		<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top px-5 bg-dark "
+			style="color:white;">
+			<p class="col-md-4 mb-0 text-muted">©Book Store, Alpa</p>
+
+
+			<ul class="nav col-md-4 justify-content-end">
+				<li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+				<li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
+				<li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+				<li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+			</ul>
+		</footer>
 	</div>
-
-
-
-
-
 
 </body>
 

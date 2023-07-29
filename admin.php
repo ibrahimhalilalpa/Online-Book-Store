@@ -7,6 +7,9 @@ if (
 	isset($_SESSION['user_email'])
 ) {
 
+
+
+
 	# Database Connection File
 	include "db_connection.php";
 
@@ -26,11 +29,9 @@ if (
 	include "php/func-language.php";
 	$languages = get_all_languages($conn);
 
-	# Acticity helper function
+	# User helper function
 	include "php/func-user.php";
 	$users = get_all_users($conn);
-
-
 
 
 
@@ -54,18 +55,17 @@ if (
 			crossorigin="anonymous"></script>
 
 
-		<link rel="stylesheet" href="css/style.css">
-		<link rel="stylesheet" href="css/tab.css">
+		<link rel="stylesheet" href="./css/style.css">
+		<link rel="stylesheet" href="./css/tab.css">
 
 		<script src="javascript/tab.js"></script>
 		<script src="javascript/javascript.js"></script>
-
-
 	</head>
 
 	<body>
 		<div class="container1">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
+				style="height: 80px; font-size: 18px; 	margin-right: 5%;">
 				<div class="container-fluid">
 					<a class="navbar-brand" href="admin.php">Admin</a>
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -73,27 +73,103 @@ if (
 						aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
-					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<div class="collapse navbar-collapse m-lg-4" id="navbarSupportedContent">
 						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 							<li class="nav-item">
 								<a class="nav-link" aria-current="page" href="index.php">Store</a>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="add-book.php">Add Book</a>
+							<li class="nav-item dropdown" style="color:black;">
+								<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+									aria-expanded="false">
+									Adding
+								</a>
+								<ul class="dropdown-menu">
+									<li class="nav-item">
+										<a style="color:black;" class="nav-link" href="add-book.php">Add Book</a>
+									</li>
+									<li class="nav-item">
+										<a style="color:black;" class="nav-link" href="add-category.php">Add Category</a>
+									</li>
+
+									<li class="nav-item">
+										<a style="color:black;" class="nav-link" href="add-author.php">Add Author</a>
+									</li>
+
+
+									<li class="nav-item">
+										<a style="color:black;" class="nav-link" href="add-language.php">Add Language</a>
+									</li>
+
+								</ul>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="add-category.php">Add Category</a>
+
+
+							<li class="nav-item dropdown" style="color:black;">
+								<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+									aria-expanded="false">
+									Mode
+								</a>
+								<ul class="dropdown-menu">
+									<li id="dark"><a style="color:black;" onclick="myFunctionDark()" class="nav-link"
+											href="#">Dark</a>
+									</li>
+									<li id="light"><a style="color:black;" onclick="myFunctionLight()" class="nav-link"
+											href="#">Light</a>
+									</li>
+								</ul>
 							</li>
+
 							<li class="nav-item">
-								<a class="nav-link" href="add-author.php">Add Author</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="add-language.php">Add Language</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="logaut.php">Logaut</a>
+								<?php if (isset($_SESSION['user_id'])) {
+									// State when the user is logged in
+									if ($_SESSION['rank'] == 0) {
+										// Display Logout link if Rank value is 0
+										?>
+										<a style="	color: red;" class="nav-link" href="logaut.php">Logout</a>
+
+									<?php } else {
+										// Display Admin link if Rank value is different than 0
+										?>
+										<a style="	color: red;" class="nav-link" href="logaut.php">Logout</a>
+									<?php }
+								} else {
+									// When the user is not logged in
+									?>
+								<a style="	color: yellow;" class="nav-link" href="login.php">Login</a>
+								<?php
+								} ?>
 							</li>
 						</ul>
+						<h5 style="color:white;">
+							<?php
+
+							// Checking that the user is logged in
+							if (isset($_SESSION['user_id']) && isset($_SESSION['user_email'])) {
+								// Print the user's name
+						
+								$full_name = $_SESSION['full_name'];
+
+								if (isset($_SESSION['rank']) && $_SESSION['rank'] == 0) {
+									$messages = [
+										"Hello, $full_name! Today is going to be a great day!",
+										"Welcome, $full_name! Good to see you here!",
+										"Hey, $full_name! Welcome to our site! We wish you a pleasant browsing!",
+										"$full_name, welcome! We hope you have a good time on our site!"
+									];
+									$random_message = $messages[array_rand($messages)];
+									echo $random_message;
+								} else {
+									echo "Admin: " . $full_name = $_SESSION['full_name'];
+								}
+
+							} else {
+								// Show login form if user is not logged in
+								// ...
+								echo "GUEST";
+
+							}
+							?>
+						</h5>
 					</div>
 				</div>
 			</nav>
@@ -134,7 +210,7 @@ if (
 
 
 					<!-- List of all books -->
-					<h4 class="mt-2 link-dark">All Books</h4>
+					<h2 class="mt-2 link-dark">All Books</h2>
 					<table class="table table-bordered shadow" style="align-items: center;">
 						<thead>
 							<tr>
@@ -219,7 +295,7 @@ if (
 				<?php } else { ?>
 
 					<!-- List of all categories -->
-					<h4 class="mt-2 link-dark link-dark">All Categories</h4>
+					<h2 class="mt-2 link-dark link-dark">All Categories</h2>
 					<table class="table table-bordered shadow">
 						<thead>
 							<tr>
@@ -265,7 +341,7 @@ if (
 					</div>
 				<?php } else { ?>
 					<!-- List of all Authors -->
-					<h4 class="mt-2 link-dark">All Authors</h4>
+					<h2 class="mt-2 link-dark">All Authors</h2>
 					<table class="table table-bordered shadow">
 						<thead>
 							<tr>
@@ -312,7 +388,7 @@ if (
 				<?php } else { ?>
 					<!-- List of all languages -->
 
-					<h4 class="mt-2 link-dark">All Languages</h4>
+					<h2 class="mt-2 link-dark">All Languages</h2>
 					<table class="table table-bordered shadow">
 						<thead>
 							<tr>
@@ -357,15 +433,17 @@ if (
 						There is no users in the database
 					</div>
 				<?php } else { ?>
+
 					<!-- List of all users -->
 
-					<h4 class="mt-2 link-dark">All Users</h4>
+					<h2 class="mt-2 link-dark">All Users</h2>
 					<table class="table table-bordered shadow">
 						<thead>
 							<tr>
 								<th>#</th>
 								<th>User Name</th>
 								<th>User Email</th>
+								<th>User Rank</th>
 								<th>Last Aktivity Date</th>
 								<th>Reading Count</th>
 								<th>Downloading Count</th>
@@ -391,7 +469,10 @@ if (
 										<?= $user['email'] ?>
 									</td>
 									<td>
-										<?= $user['last_aktivity_date'] ?>
+										<?= $user['rank'] ?>
+									</td>
+									<td>
+										<?= $user['last_login'] ?>
 									</td>
 									<td>
 										<?= $user['reading_count'] ?>
@@ -403,56 +484,93 @@ if (
 										<?= $user['reading_count'] + $user['downloading_count'] ?>
 									</td>
 									<td>
+										<?php
+										if (isset($_POST['chanceRank'])) {
+											$db = mysqli_connect($sName, $uName, $pass, $db_name) or die("Could not connect database");
+											$user_id = $_POST['user_id'];
+											$sql = "SELECT rank FROM users WHERE id = $user_id";
+											$result = mysqli_query($db, $sql);
+
+											if (mysqli_num_rows($result) > 0) {
+												$row = mysqli_fetch_assoc($result);
+												$current_rank = $row['rank'];
+
+												// Change the rank value
+							
+												if ($current_rank == 0) {
+													$update_sql = "UPDATE users SET rank = 1 WHERE id = $user_id";
+												} else {
+													$update_sql = "UPDATE users SET rank = 0 WHERE id = $user_id";
+												}
+
+												$update_result = mysqli_query($db, $update_sql);
+
+												if ($update_result) {
+													echo '<script>alert("Rank has been successfully changed.");</script>';
+													echo '<script>window.location.href = "admin.php";</script>';
+												} else {
+													echo "Error: " . mysqli_error($db);
+													echo '<script>window.location.href = "admin.php";</script>';
+												}
+											} else {
+												echo "User not found.";
+												echo '<script>window.location.href = "admin.php";</script>';
+											}
+										}
+										?>
+
+										<form method="POST" action="">
+											<input type="hidden" name="user_id" value="<?= $user['id'] ?>">
+											<button class="btn btn-warning" name="chanceRank">Change Rank</button>
+										</form>
 										<a href="php/delete-user.php?id=<?= $user['id'] ?>" class="btn btn-danger">Delete</a>
 									</td>
-
 
 								</tr>
 
 							<?php }
-
-
 							?>
 							<tr>
 								<td style="  border: none;"></td>
 							</tr>
 
-								<td>TOTAL</td>
-								<td style="  border: none;"></td>
-								<td style="  border: none;"></td>
-								<td style="  border: none;"></td>
+							<td>TOTAL</td>
+							<td style="  border: none;"></td>
+							<td style="  border: none;"></td>
+							<td style="  border: none;"></td>
+							<td style="  border: none;"></td>
 
-								<td>
-									<?php
-									$query = mysqli_query($db, "select SUM(reading_count) AS 'Total' from users order by Total desc limit 1;");
-									while ($row = mysqli_fetch_array($query)) {
-										?>
-										<b>
-											<?php echo htmlentities($row['Total']); ?>
-										</b>
-									<?php } ?>
-								</td>
-								<td>
-									<?php
-									$query = mysqli_query($db, "select SUM(downloading_count) AS 'Total' from users order by Total desc limit 1;");
-									while ($row = mysqli_fetch_array($query)) {
-										?>
-										<b>
-											<?php echo htmlentities($row['Total']); ?>
-										</b>
-									<?php } ?>
-								</td>
-								<td>
-									<?php
-									$query = mysqli_query($db, "select SUM(downloading_count) + SUM(reading_count)  AS 'Total' from users order by Total desc limit 1;");
-									while ($row = mysqli_fetch_array($query)) {
-										?>
-										<b>
-											<?php echo htmlentities($row['Total']); ?>
-										</b>
-									<?php } ?>
-								</td>
-								<td></td>
+							<td>
+								<?php
+								$query = mysqli_query($db, "select SUM(reading_count) AS 'Total' from users order by Total desc limit 1;");
+								while ($row = mysqli_fetch_array($query)) {
+									?>
+									<b>
+										<?php echo htmlentities($row['Total']); ?>
+									</b>
+								<?php } ?>
+							</td>
+							<td>
+								<?php
+								$query = mysqli_query($db, "select SUM(downloading_count) AS 'Total' from users order by Total desc limit 1;");
+								while ($row = mysqli_fetch_array($query)) {
+									?>
+									<b>
+										<?php echo htmlentities($row['Total']); ?>
+									</b>
+								<?php } ?>
+							</td>
+							<td>
+								<?php
+								$query = mysqli_query($db, "select SUM(downloading_count) + SUM(reading_count)  AS 'Total' from users order by Total desc limit 1;");
+								while ($row = mysqli_fetch_array($query)) {
+									?>
+									<b>
+										<?php echo htmlentities($row['Total']); ?>
+									</b>
+								<?php } ?>
+							</td>
+							<td></td>
 
 						</tbody>
 					</table>

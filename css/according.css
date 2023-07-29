@@ -1,9 +1,10 @@
 .accordion {
-  background-color: #eee;
-  color: #444;
+  background-color: #cfe2f3;
+  color: #333;
   cursor: pointer;
   padding: 10px;
   width: 75%;
+  height: 50px;
   border: none;
   text-align: left;
   outline: none;
@@ -12,16 +13,15 @@
 }
 
 .accordion .active, .accordion:hover {
-  background-color: #ccc;
+  background-color: #a3c8e6;
 }
 
 .accordion:after {
   content: '\002B';
-  color: #777;
+  color: #555;
   font-weight: bold;
   float: right;
   margin-left: 5px;
-  
 }
 
 .accordion .active:after {
@@ -30,7 +30,7 @@
 
 .panel {
   padding: 0 18px;
-  background-color: white;
+  background-color: #eaf4fc;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;

@@ -5,51 +5,44 @@
 session_start();
 
 //check if category name is logged in
-if(isset($_SESSION['user_id']) && isset($_SESSION['user_email']) )
-{
+if (isset($_SESSION['user_id']) && isset($_SESSION['user_email'])) {
 
-#database connection file
-include "../db_connection.php";
+    #database connection file
+    include "../db_connection.php";
 
 
-//check if category name is summited 
-    if(isset($_POST['category_name']) &&
-       isset($_POST['category_id']))
-    {
+    //check if category name is summited 
+    if (
+        isset($_POST['category_name']) &&
+        isset($_POST['category_id'])
+    ) {
         //get data from POST request and store them in var
         $name = $_POST['category_name'];
         $id = $_POST['category_id'];
 
 
         #simple form validation
-        if(empty($name))
-        {
+        if (empty($name)) {
 
-            $em="The category name is required";
-			header("Location: ../edit-category.php?error=$em&id=$id");
+            $em = "The category name is required";
+            header("Location: ../edit-category.php?error=$em&id=$id");
             exit;
-        }
-        else
-        {
+        } else {
             #update the database
             $sql = "UPDATE categories SET name =? where id=?";
             $stmt = $conn->prepare($sql);
-            $res = $stmt->execute([$name,$id]);
+            $res = $stmt->execute([$name, $id]);
             //If there is no error while inserting the data
 
-            if($res)
-            {
+            if ($res) {
                 #success message
-                $sm="Successfully updated!";
-				header("Location: ../edit-category.php?success=$sm&id=$id");
-                exit;   
-            }
-            else
-            {
-                if(empty($name))
-                {
+                $sm = "Successfully updated!";
+                header("Location: ../edit-category.php?success=$sm&id=$id");
+                exit;
+            } else {
+                if (empty($name)) {
                     #error message
-                    $em="Unknow error occurred!";
+                    $em = "Unknow error occurred!";
                     header("Location: ../edit-category.php?error=$em&id=$id");
                     exit;
                 }
@@ -57,16 +50,11 @@ include "../db_connection.php";
         }
 
 
-    }
-    else
-    {
+    } else {
         header("Location: ../admin.php");
-        exit; 
+        exit;
     }
-}
-else
-{
+} else {
     header("Location: ../login.php");
-    exit;   
+    exit;
 }
-
